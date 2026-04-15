@@ -95,7 +95,7 @@ export default function App() {
         />
       </main>
       <footer className="text-center text-xs text-kinective-muted py-6">
-        Built by Kavi Lu · Kinective Assessment 2026
+        Kavi Lu
       </footer>
       <ContactForm
         open={formOpen}

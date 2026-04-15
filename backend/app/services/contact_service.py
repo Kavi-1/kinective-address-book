@@ -47,6 +47,7 @@ def list_contacts(
                 Contact.last_name.ilike(pattern),
                 Contact.email.ilike(pattern),
                 Contact.phone.ilike(pattern),
+                Contact.company.ilike(pattern),
             )
         )
     return query.order_by(Contact.created_at.desc()).offset(skip).limit(limit).all()
