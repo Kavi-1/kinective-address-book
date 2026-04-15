@@ -44,7 +44,7 @@ export function ContactRow({ contact, onEdit, onDelete }: ContactRowProps) {
           size="icon"
           onClick={() => onEdit(contact)}
           aria-label="Edit"
-          className="text-white/70 hover:text-kinective-accent hover:bg-white/10"
+          className="text-white/70 hover:text-kinective-accent hover:bg-white/10 hover:cursor-pointer"
         >
           <Pencil className="h-4 w-4" />
         </Button>
@@ -53,7 +53,7 @@ export function ContactRow({ contact, onEdit, onDelete }: ContactRowProps) {
           size="icon"
           onClick={() => onDelete(contact)}
           aria-label="Delete"
-          className="text-white/70 hover:text-red-300 hover:bg-white/10"
+          className="text-white/70 hover:text-red-300 hover:bg-white/10 hover:cursor-pointer"
         >
           <Trash2 className="h-4 w-4" />
         </Button>

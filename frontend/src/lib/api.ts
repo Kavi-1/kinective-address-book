@@ -12,9 +12,10 @@ async function handle(res: Response) {
   return res.json()
 }
 
-export function listContacts(search?: string): Promise<Contact[]> {
-  const url = search ? `${BASE}?search=${encodeURIComponent(search)}` : BASE
-  return fetch(url).then(handle)
+export function listContacts(search?: string, skip = 0, limit = 5): Promise<Contact[]> {
+  const params = new URLSearchParams({ skip: String(skip), limit: String(limit) })
+  if (search) params.set("search", search)
+  return fetch(`${BASE}?${params}`).then(handle)
 }
 
 export function createContact(data: ContactCreate): Promise<Contact> {

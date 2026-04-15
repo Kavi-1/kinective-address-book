@@ -20,7 +20,7 @@ export function Header({ onAdd }: HeaderProps) {
             </p>
           </div>
         </div>
-        <Button onClick={onAdd} className="bg-kinective-accent text-kinective-dark hover:bg-kinective-accent/90 font-semibold">
+        <Button onClick={onAdd} className="bg-kinective-accent text-kinective-dark hover:bg-kinective-accent/90 font-semibold hover:cursor-pointer">
           <Plus className="h-4 w-4" />
           Add contact
         </Button>

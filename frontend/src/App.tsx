@@ -19,18 +19,23 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [formOpen, setFormOpen] = useState(false)
   const [editingContact, setEditingContact] = useState<Contact | null>(null)
+  const [page, setPage] = useState(0)
+  const PAGE_SIZE = 5
+
+  // reset to first page when search changes
+  useEffect(() => setPage(0), [search])
 
   useEffect(() => {
     // wait after typing stops before searching, so doesnt fetch on every keystroke
     const t = setTimeout(() => {
       setLoading(true)
-      listContacts(search || undefined)
+      listContacts(search || undefined, page * PAGE_SIZE, PAGE_SIZE)
         .then(setContacts)
         .catch((err) => toast.error(err.message))
         .finally(() => setLoading(false))
     }, 250)
     return () => clearTimeout(t)
-  }, [search])
+  }, [search, page])
 
   async function handleCreate(data: ContactCreate) {
     try {
@@ -93,8 +98,25 @@ export default function App() {
           onEdit={openEdit}
           onDelete={handleDelete}
         />
+        <div className="flex justify-between items-center pt-2">
+          <button
+            onClick={() => setPage((p) => p - 1)}
+            disabled={page === 0}
+            className="px-3 py-1 text-sm rounded border border-slate-200 disabled:opacity-40 hover:cursor-pointer"
+          >
+            Prev
+          </button>
+          <span className="text-sm text-kinective-muted">Page {page + 1}</span>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            disabled={contacts.length < PAGE_SIZE}
+            className="px-3 py-1 text-sm rounded border border-slate-200 disabled:opacity-40 hover:cursor-pointer"
+          >
+            Next
+          </button>
+        </div>
       </main>
-      <footer className="text-center text-xs text-kinective-muted py-6">
+      <footer className="text-center text-kinective-muted py-6 text-base">
         Kavi Lu
       </footer>
       <ContactForm
