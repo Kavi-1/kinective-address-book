@@ -36,6 +36,9 @@ export function ContactRow({ contact, onEdit, onDelete }: ContactRowProps) {
             </>
           )}
         </div>
+        {contact.address && (
+          <div className="text-xs text-white/50 truncate mt-0.5">{contact.address}</div>
+        )}
       </div>
 
       <div className="flex gap-1 shrink-0">

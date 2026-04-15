@@ -37,12 +37,17 @@ export default function App() {
     return () => clearTimeout(t)
   }, [search, page])
 
+  // to make sure page always displays 5 contacts even after create new contact
+  async function refetch() {
+    setContacts(await listContacts(search || undefined, page * PAGE_SIZE, PAGE_SIZE))
+  }
+
   async function handleCreate(data: ContactCreate) {
     try {
-      const created = await createContact(data)
-      setContacts((prev) => [created, ...prev])
+      await createContact(data)
       toast.success("Contact added")
       closeForm()
+      await refetch()
     } catch (err) {
       toast.error((err as Error).message)
     }
@@ -50,10 +55,10 @@ export default function App() {
 
   async function handleUpdate(id: string, data: ContactCreate) {
     try {
-      const updated = await updateContact(id, data)
-      setContacts((prev) => prev.map((c) => (c.id === id ? updated : c)))
+      await updateContact(id, data)
       toast.success("Contact updated")
       closeForm()
+      await refetch()
     } catch (err) {
       toast.error((err as Error).message)
     }
@@ -66,8 +71,8 @@ export default function App() {
     if (!confirmed) return
     try {
       await deleteContact(contact.id)
-      setContacts((prev) => prev.filter((c) => c.id !== contact.id))
       toast.success("Contact deleted")
+      await refetch()
     } catch (err) {
       toast.error((err as Error).message)
     }
