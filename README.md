@@ -57,6 +57,8 @@ All routes begin with `/api/v1/contacts`. full swagger docs at `/docs`.
   - **View**: React frontend (`frontend/src/`)                                                                                                   
   - **Controller**: `backend/app/routes/` (HTTP endpoints that delegate work to services)
 
+See [DESIGN.md](./DESIGN.md) for architecture diagram, flow diagram, and future enhancements.
+
 ## Kinective Color Palette
 The colors I used to create the Kinective vibe
 - Primary blue: `#0051CE`
