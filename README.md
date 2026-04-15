@@ -3,7 +3,7 @@ Simple full-stack address book app. FastAPI backend + React frontend with full C
 
 **Live demo:** [https://kinective-address-book-kavi.vercel.app/](https://kinective-address-book-kavi.vercel.app/)
 
-**API (Swagger):** [https://kinective-kavi.up.railway.app/docs](https://kinective-kavi.up.railway.app/docs)
+**API (OpenAPI):** [https://kinective-kavi.up.railway.app/docs](https://kinective-kavi.up.railway.app/docs)
 
 ## Basic Features
 - Full CRUD on contacts (create, read, update, delete)
@@ -41,7 +41,7 @@ Open [http://localhost:5173](http://localhost:5173) in browser.
 4. **Database schema** — run `backend/schema.sql` in your Postgres DB (I chose Supabase) to create the `contacts` table.
 
 ## API
-All routes begin with `/api/v1/contacts`. full swagger docs at `/docs`.
+All routes begin with `/api/v1/contacts`. full docs at `/docs`.
 
 | Method | Path | Description |
 |---|---|---|
