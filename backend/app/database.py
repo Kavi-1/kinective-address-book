@@ -1,3 +1,5 @@
+""" Database config file for fastAPI (set up SQLAlchemy, Base Model, session)"""
+
 import os
 
 from dotenv import load_dotenv

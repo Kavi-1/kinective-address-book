@@ -1,3 +1,5 @@
+""" SQLAlchemy ORM model for Contact """
+
 import uuid
 from datetime import datetime
 

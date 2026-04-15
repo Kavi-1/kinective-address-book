@@ -1,23 +1,33 @@
+""" Handles DB queries / operations """
+
 from uuid import UUID
 
 from sqlalchemy import or_
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.models.contact import Contact
 from app.schemas.contact import ContactCreate, ContactUpdate
 
 
+class EmailAlreadyExists(Exception):
+    """Raise error when trying to create/update a contact with duplicate email"""
+
 def create_contact(db: Session, data: ContactCreate) -> Contact:
     """create/insert new contact and return row"""
-    contact = Contact(**data.model_dump()) 
+    contact = Contact(**data.model_dump())
     db.add(contact)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise EmailAlreadyExists()
     db.refresh(contact)
     return contact
 
 
 def get_contact(db: Session, contact_id: UUID) -> Contact | None:
-    '''find/return contact by id, return None if not found'''
+    """find/return contact by id, return None if not found"""
     return db.query(Contact).filter(Contact.id == contact_id).first()
 
 
@@ -51,7 +61,11 @@ def update_contact(
         return None
     for field, value in data.model_dump(exclude_unset=True).items():
         setattr(contact, field, value)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise EmailAlreadyExists()
     db.refresh(contact)
     return contact
 

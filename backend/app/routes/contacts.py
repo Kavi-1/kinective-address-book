@@ -1,3 +1,5 @@
+""" API endpoints """
+
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -6,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas.contact import ContactCreate, ContactResponse, ContactUpdate
 from app.services import contact_service
+from app.services.contact_service import EmailAlreadyExists
 
 router = APIRouter(prefix="/contacts", tags=["contacts"])
 
@@ -13,7 +16,10 @@ router = APIRouter(prefix="/contacts", tags=["contacts"])
 @router.post("", response_model=ContactResponse, status_code=status.HTTP_201_CREATED)
 def create_contact(data: ContactCreate, db: Session = Depends(get_db)):
     """Create new contact"""
-    return contact_service.create_contact(db, data)
+    try:
+        return contact_service.create_contact(db, data)
+    except EmailAlreadyExists:
+        raise HTTPException(status_code=409, detail="Email already exists")
 
 
 @router.get("", response_model=list[ContactResponse])
@@ -36,12 +42,15 @@ def get_contact(contact_id: UUID, db: Session = Depends(get_db)):
     return contact
 
 
-@router.put("/{contact_id}", response_model=ContactResponse)
+@router.patch("/{contact_id}", response_model=ContactResponse)
 def update_contact(
     contact_id: UUID, data: ContactUpdate, db: Session = Depends(get_db)
 ):
     """Partially update a contact (only changes provided fields)"""
-    contact = contact_service.update_contact(db, contact_id, data)
+    try:
+        contact = contact_service.update_contact(db, contact_id, data)
+    except EmailAlreadyExists:
+        raise HTTPException(status_code=409, detail="Email already exists")
     if contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
     return contact

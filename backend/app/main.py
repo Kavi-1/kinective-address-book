@@ -1,12 +1,23 @@
-from fastapi import FastAPI
+""" FastAPI main entry - wires routes, CORS, and init the db"""
 
-from app import models  
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app import models
 from app.database import Base, engine
 from app.routes import api_router
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Kinective Address Book API - Kavi")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(api_router)
 
@@ -16,4 +27,4 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "gooddd!"}
+    return {"status": "ok"}
